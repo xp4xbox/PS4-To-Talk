@@ -178,7 +178,7 @@ def set_button(button):
 
 
 root = Tk()
-root.wm_title("PS4 To Speak")
+root.wm_title("PS4 To Talk")
 root.geometry("20x300")
 btnSquare = Button(root, text="Square", width=7, bd=4, command=lambda: set_button("0")).pack(expand=True)
 btnX = Button(root, text="X", width=7, bd=4, command=lambda: set_button("1")).pack(expand=True)
