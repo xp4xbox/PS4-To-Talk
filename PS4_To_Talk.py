@@ -13,6 +13,7 @@ import ctypes
 from tkinter import *
 import win32api
 import win32con
+import sys
 
 VK_CODE = {'backspace':0x08,
            'tab':0x09,
@@ -171,14 +172,31 @@ except pygame.error:
     sys.exit(0)
 
 
+def set_key(ky):
+    global key, root
+    key = ky
+    root.destroy()
+
+root = Tk()
+root.wm_title("Configure Key")
+root.geometry("40x150")
+btnNumpadMinus = Button(root, text="Numpad -", width=9, bd=4, command=lambda: set_key("subtract_key")).pack(expand=True)
+btnC = Button(root, text="C", width=9, bd=4, command=lambda: set_key("c")).pack(expand=True)
+btnT = Button(root, text="T", width=9, bd=4, command=lambda: set_key("t")).pack(expand=True)
+btnSlash = Button(root, text="Backslash", width=9, bd=4, command=lambda: set_key("\\")).pack(expand=True)
+root.mainloop()
+
+if not "key" in globals():
+    sys.exit(0)
+
+
 def set_button(button):
     global btn, root
     btn = button
     root.destroy()
 
-
 root = Tk()
-root.wm_title("PS4 To Talk")
+root.wm_title("Configure Button")
 root.geometry("20x300")
 btnSquare = Button(root, text="Square", width=7, bd=4, command=lambda: set_button("0")).pack(expand=True)
 btnX = Button(root, text="X", width=7, bd=4, command=lambda: set_button("1")).pack(expand=True)
@@ -191,6 +209,9 @@ btnR2 = Button(root, text="R2", width=7, bd=4, command=lambda: set_button("7")).
 btnPS4 = Button(root, text="PS4 Circle", width=7, bd=4, command=lambda: set_button("12")).pack(expand=True)
 root.mainloop()
 
+if not "btn" in globals():
+    sys.exit(0)
+
 
 def run():
     while True:
@@ -201,7 +222,7 @@ def run():
             blnbreak = "False"
             if event.type == pygame.JOYBUTTONDOWN:
                 if objController.get_button(int(btn)):
-                    win32api.keybd_event(VK_CODE["t"], 0, 0, 0)
+                    win32api.keybd_event(VK_CODE[key], 0, 0, 0)
 
                     while True:
                         time.sleep(0.1)
@@ -212,6 +233,6 @@ def run():
                                     blnbreak = "True"
                                     break
                         if blnbreak == "True":   
-                            win32api.keybd_event(VK_CODE["t"], 0,win32con.KEYEVENTF_KEYUP, 0)
+                            win32api.keybd_event(VK_CODE[key], 0,win32con.KEYEVENTF_KEYUP, 0)
                             break
 run()
